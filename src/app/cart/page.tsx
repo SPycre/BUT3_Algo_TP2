@@ -1,7 +1,7 @@
 "use client";
 import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 import { Button, ProductCardLayout, ProductCartLine, SectionContainer } from "tp-kit/components";
-import { addLine, removeLine, updateLine, useStore } from "../../hooks/use-cart";
+import { addLine, computeCartTotal, removeLine, updateLine, useStore } from "../../hooks/use-cart";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 let total = 0;
 
@@ -36,7 +36,7 @@ export default function DevCartPage() {
               onQtyChange={(qty) => {updateLine({product:line.product,qty:qty})}}
             />
         ))}
-				<div className="font-bold flex justify-between"><span>Total : </span><span>{total} €</span></div>
+				<div className="font-bold flex justify-between"><span>Total : </span><span>{computeCartTotal(lines)} €</span></div>
         <Button fullWidth>Commander</Button>
 				<Button variant={"outline"} fullWidth>Vider le panier</Button>
 			</section>
