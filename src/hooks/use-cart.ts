@@ -3,13 +3,15 @@ import { CartData, ProductLineData } from '../types'
 import { ProductData } from 'tp-kit/types'
 import { ProductCartLine } from 'tp-kit/components';
 import { stat } from 'fs';
+import { wait } from 'tp-kit/utils/wait';
 
 export const useStore = create<CartData>(set => ({
     lines:[],
     count:0
 }))
 
-export function addLine(product: ProductData) {
+export async function addLine(product: ProductData) {
+    await wait(1000)
     useStore.setState((state) => {
         const index = state.lines.findIndex(line => line.product.id === product.id)
         if (index != -1) {

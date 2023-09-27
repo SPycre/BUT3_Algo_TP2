@@ -1,4 +1,4 @@
-import { Button, ProductCartLine } from "tp-kit/components"
+import { Button, FormattedPrice, ProductCartLine } from "tp-kit/components"
 import { clearCart, computeCartTotal, removeLine, updateLine, useStore } from "../hooks/use-cart"
 import CartCounter from "./cart-counter"
 
@@ -8,6 +8,7 @@ export default function Cart() {
         <>
         {lines.map((line) => (
                 <ProductCartLine
+                className="m-1"
                 product={line.product}
                 key={line.product.id}
                 qty={line.qty}
@@ -15,9 +16,9 @@ export default function Cart() {
                 onQtyChange={(qty) => {updateLine({product:line.product,qty:qty})}}
                 />
             ))}
-			<div className="font-bold flex justify-between"><span>Total : </span><span>{computeCartTotal(lines)} €</span></div>
-            <Button fullWidth>Commander</Button>
-			<Button variant={"outline"} onClick={() => clearCart()} fullWidth>Vider le panier</Button>
+			<div className="font-bold flex justify-between"><FormattedPrice price={computeCartTotal(lines)}/></div>
+            <Button className="m-1" fullWidth>Commander</Button>
+			<Button className="m-1" variant={"outline"} onClick={() => clearCart()} fullWidth>Vider le panier</Button>
         </>  
     )
 }
