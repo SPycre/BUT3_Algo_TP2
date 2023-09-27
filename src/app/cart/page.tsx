@@ -3,6 +3,7 @@ import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 import { Button, ProductCardLayout, ProductCartLine, SectionContainer } from "tp-kit/components";
 import { addLine, computeCartTotal, removeLine, updateLine, useStore } from "../../hooks/use-cart";
 import Cart from "../../components/cart";
+import CartCounter from "../../components/cart-counter";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 let total = 0;
 
@@ -25,9 +26,11 @@ export default function DevCartPage() {
           />
         ))}
       </section>
+      
       {/* /Produits */}
-
+      
       {/* Panier */}
+      
       <Cart/>
       {/* /Panier */}
     </SectionContainer>

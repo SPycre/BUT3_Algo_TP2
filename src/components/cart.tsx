@@ -1,10 +1,12 @@
 import { Button, ProductCartLine } from "tp-kit/components"
 import { clearCart, computeCartTotal, removeLine, updateLine, useStore } from "../hooks/use-cart"
+import CartCounter from "./cart-counter"
 
 export default function Cart() {
     const lines = useStore((state) => state.lines)
     return (
         <section className="w-full lg:w-1/3 space-y-8">
+            <CartCounter/>
             {lines.map((line) => (
                 <ProductCartLine
                 product={line.product}
