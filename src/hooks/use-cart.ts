@@ -2,9 +2,11 @@ import { create } from 'zustand'
 import { CartData, ProductLineData } from '../types'
 import { ProductData } from 'tp-kit/types'
 import { ProductCartLine } from 'tp-kit/components';
+import { stat } from 'fs';
 
 export const useStore = create<CartData>(set => ({
-    lines:[]
+    lines:[],
+    count:0
 }))
 
 export function addLine(product: ProductData) {
@@ -18,7 +20,7 @@ export function addLine(product: ProductData) {
                 product:product
             })
         }
-        return {lines:[...state.lines]}
+        return {lines:[...state.lines],count:state.lines.length}
     })
 }
 
@@ -28,7 +30,7 @@ export function updateLine(line: ProductLineData) {
         if (index != -1) {
             state.lines[index] = line
         }
-        return {lines:[...state.lines]}
+        return {lines:[...state.lines],count:state.lines.length}
     })
 }
 
@@ -39,13 +41,14 @@ export function removeLine(productId: number) {
                 data.lines.splice(index,1)
             }
         })
-        return {lines:[...data.lines]}
+        return {lines:[...data.lines],count:data.lines.length}
     })
 }
 
 export function clearCart() {
     useStore.setState((data) => ({
-        lines:[]
+        lines:[],
+        count:0
     }))
 }
 

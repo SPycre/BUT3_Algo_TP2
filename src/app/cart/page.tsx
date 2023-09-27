@@ -16,7 +16,6 @@ export default function DevCartPage() {
       wrapperClassName="flex flex-col lg:flex-row gap-24"
     >
       {/* Produits */}
-      
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 flex-1">
         {products.map((product) => (
           <ProductCardLayout
@@ -30,8 +29,10 @@ export default function DevCartPage() {
       {/* /Produits */}
       
       {/* Panier */}
-      
-      <Cart/>
+      <section className="w-full lg:w-1/3 space-y-8">
+        <CartCounter/>
+        <Cart/>
+      </section>
       {/* /Panier */}
     </SectionContainer>
   );

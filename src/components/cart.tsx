@@ -5,9 +5,8 @@ import CartCounter from "./cart-counter"
 export default function Cart() {
     const lines = useStore((state) => state.lines)
     return (
-        <section className="w-full lg:w-1/3 space-y-8">
-            <CartCounter/>
-            {lines.map((line) => (
+        <>
+        {lines.map((line) => (
                 <ProductCartLine
                 product={line.product}
                 key={line.product.id}
@@ -19,6 +18,6 @@ export default function Cart() {
 			<div className="font-bold flex justify-between"><span>Total : </span><span>{computeCartTotal(lines)} €</span></div>
             <Button fullWidth>Commander</Button>
 			<Button variant={"outline"} onClick={() => clearCart()} fullWidth>Vider le panier</Button>
-		</section>
+        </>  
     )
 }
