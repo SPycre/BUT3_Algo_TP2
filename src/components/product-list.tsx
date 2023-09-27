@@ -38,7 +38,7 @@ const ProductList: FC<Props> = memo(function ({ categories, showFilters = false 
                 <ProductCardLayout
                   product={product}
                   button={
-                    <AddToCartButton product={product}/>
+                    <AddToCartButton variant="ghost" product={product}/>
                   }
                 />
               )}

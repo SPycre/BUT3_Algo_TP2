@@ -1,3 +1,5 @@
+"use client"
+
 import { type } from "os";
 import { Button } from "tp-kit/components";
 import { ProductData } from "tp-kit/types";
@@ -6,10 +8,11 @@ import { Loader } from '@mantine/core';
 import { useState } from "react";
 
 type Props = {
-    product : ProductData
+    product : ProductData,
+    variant : "primary" | "ghost" | "white" | "outline" | "light" | "danger" | null | undefined
 }
 
-export default function AddToCartButton({product} : Props) {
+export default function AddToCartButton({product, variant} : Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = () => {
@@ -27,7 +30,7 @@ export default function AddToCartButton({product} : Props) {
     };
 
     return (
-        <Button variant="ghost" className="flex-1 !py-4" onClick={handleClick}>
+        <Button variant={variant} className="flex-1 !py-4" onClick={handleClick}>
             {isLoading ? <Loader size={20}/> : 'Ajouter au panier'}
         </Button>
     )

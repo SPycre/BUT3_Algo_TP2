@@ -15,6 +15,7 @@ import {
   ProductAttribute,
   ProductAttributesTable,
 } from "../../../components/product-attributes-table";
+import AddToCartButton from "../../../components/add-cart-button";
 const product = {
   ...PRODUCTS_CATEGORY_DATA[0].products[0],
   category: {
@@ -97,7 +98,7 @@ export default async function ProductPage({ params }: NextPageProps<Props>) {
               <p className="!my-0 text-xl">
                 <FormattedPrice price={product.price} />
               </p>
-              <Button variant={"primary"}>Ajouter au panier</Button>
+              <AddToCartButton variant="primary" product={product}/>
             </div>
           </div>
 
@@ -118,9 +119,7 @@ export default async function ProductPage({ params }: NextPageProps<Props>) {
               <ProductCardLayout
                 product={product}
                 button={
-                  <Button variant="ghost" className="flex-1 !py-4">
-                    Ajouter au panier
-                  </Button>
+                  <AddToCartButton variant="ghost" product={product}/>
                 }
               />
             )}

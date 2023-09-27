@@ -1,10 +1,10 @@
-import { computeLineSubTotal, useStore } from "../hooks/use-cart";
+import { useStore } from "../hooks/use-cart"
 
 
 export default function CartCounter() {
-    console.log("rendu counter")
+    console.log("render count")
     const count = useStore((state) => state.count)
     return (
-        <section className="w-full">{count}</section>
+        <>{count}</>
     )
 }

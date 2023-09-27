@@ -3,6 +3,7 @@ import { clearCart, computeCartTotal, removeLine, updateLine, useStore } from ".
 import CartCounter from "./cart-counter"
 
 export default function Cart() {
+    console.log("render lines")
     const lines = useStore((state) => state.lines)
     return (
         <>
