@@ -3,52 +3,50 @@ import { CartData, ProductLineData } from '../types'
 import { ProductData } from 'tp-kit/types'
 import { ProductCartLine } from 'tp-kit/components';
 
-const useStore = create<CartData>(set => ({
+export const useStore = create<CartData>(set => ({
     lines:[]
 }))
 
 export function addLine(product: ProductData) {
-    useStore(data => {
-        let exist = false
-        data.lines.forEach(line => {
-            if (line.product == product) {
-                line.qty += 1
-                exist = true
-            }
-        })
-        if (!exist) {
-            data.lines.push({
+    useStore.setState((state) => {
+        const index = state.lines.findIndex(line => line.product.id === product.id)
+        if (index != -1) {
+            state.lines[index].qty += 1
+        } else {
+            state.lines.push({
                 qty:1,
                 product:product
             })
         }
+        return {lines:[...state.lines]}
     })
 }
 
 export function updateLine(line: ProductLineData) {
-    useStore(data => {
-        data.lines.forEach(cline => {
-            if (cline.product == line.product) {
-                cline.qty = line.qty
-            }
-        })
+    useStore.setState((state) => {
+        const index = state.lines.findIndex(cline => cline.product.id === line.product.id)
+        if (index != -1) {
+            state.lines[index] = line
+        }
+        return {lines:[...state.lines]}
     })
 }
 
 export function removeLine(productId: number) {
-    useStore(data => {
+    useStore.setState((data) => {
         data.lines.forEach((line,index) => {
             if (line.product.id == productId) {
                 data.lines.splice(index,1)
             }
         })
+        return {lines:[...data.lines]}
     })
 }
 
 export function clearCart() {
-    useStore(data => {
-        data.lines.splice(0,data.lines.length)
-    })
+    useStore.setState((data) => ({
+        lines:[]
+    }))
 }
 
 export function computeLineSubTotal(line: ProductLineData): number {
