@@ -2,11 +2,13 @@
 import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 import { Button, ProductCardLayout, ProductCartLine, SectionContainer } from "tp-kit/components";
 import { addLine, computeCartTotal, removeLine, updateLine, useStore } from "../../hooks/use-cart";
+import Cart from "../../components/cart";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 let total = 0;
 
 export default function DevCartPage() {
-  const lines = useStore((state) => state.lines)
+  console.log("rendu page")
+  
   return (
     <SectionContainer
       className="py-36"
@@ -26,20 +28,7 @@ export default function DevCartPage() {
       {/* /Produits */}
 
       {/* Panier */}
-      <section className="w-full lg:w-1/3 space-y-8">
-        {lines.map((line) => (
-            <ProductCartLine
-              product={line.product}
-              key={line.product.id}
-              qty={line.qty}
-              onDelete={() => {removeLine(line.product.id)}}
-              onQtyChange={(qty) => {updateLine({product:line.product,qty:qty})}}
-            />
-        ))}
-				<div className="font-bold flex justify-between"><span>Total : </span><span>{computeCartTotal(lines)} €</span></div>
-        <Button fullWidth>Commander</Button>
-				<Button variant={"outline"} fullWidth>Vider le panier</Button>
-			</section>
+      <Cart/>
       {/* /Panier */}
     </SectionContainer>
   );
