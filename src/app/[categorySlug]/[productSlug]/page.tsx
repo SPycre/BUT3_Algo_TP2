@@ -16,13 +16,9 @@ import {
   ProductAttributesTable,
 } from "../../../components/product-attributes-table";
 import AddToCartButton from "../../../components/add-cart-button";
-const product = {
-  ...PRODUCTS_CATEGORY_DATA[0].products[0],
-  category: {
-    ...PRODUCTS_CATEGORY_DATA[0],
-    products: PRODUCTS_CATEGORY_DATA[0].products.slice(1),
-  },
-};
+import { getProduct } from "../../../utils/database";
+import { notFound } from 'next/navigation'
+import { Console } from "console";
 
 type Props = {
   categorySlug: string;
@@ -33,6 +29,10 @@ export async function generateMetadata({
   params,
   searchParams,
 }: NextPageProps<Props>): Promise<Metadata> {
+  const product = await getProduct(params.productSlug)
+
+  if (product == null) {notFound();}
+
   return {
     title: product.name,
     description:
@@ -50,6 +50,10 @@ const productAttributes: ProductAttribute[] = [
 ];
 
 export default async function ProductPage({ params }: NextPageProps<Props>) {
+  const product = await getProduct(params.productSlug)
+
+  if (product == null) {notFound();}
+
   return (
     <SectionContainer wrapperClassName="max-w-5xl">
       <BreadCrumbs
