@@ -18,7 +18,11 @@ export const getProduct = cache(async (productSlug : string) => {
         include:{
             category: {
                 include:{
-                    products:true
+                    products:{
+                        where:{
+                            slug: {not:productSlug}
+                        }
+                    }
                 }
             }
         },
