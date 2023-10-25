@@ -4,7 +4,6 @@ import { ProductFilters } from "./product-filters";
 import { ProductsCategoryData } from "tp-kit/types";
 import { Button, ProductCardLayout, ProductGridLayout } from "tp-kit/components";
 import { ProductFiltersResult } from "../types";
-import { filterProducts } from "../utils/filter-products";
 import Link from "next/link";
 import { addLine } from "../hooks/use-cart";
 import AddToCartButton from "./add-cart-button";
@@ -16,10 +15,9 @@ type Props = {
 
 const ProductList: FC<Props> = memo(function ({ categories, showFilters = false }) {
   const [filters, setFilters] = useState<ProductFiltersResult | undefined>();
-  const [filteredCategories, setFiltered] = useState([]);
+  const [filteredCategories, setFiltered] = useState<ProductsCategoryData[]>([]);
 
   useEffect(() => {
-    console.log("UPDATED FILTRERRSSS")
     const params = new URLSearchParams()
     if (filters?.search != null) {
       params.append("search",filters?.search)
