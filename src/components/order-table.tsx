@@ -15,13 +15,10 @@ export default function OrderTable({orders} : Props) {
     const router = useRouter();
 
     return (
-        <OrderTableLayout
-        onRowClick={(order) => {
-            console.log("hojoj")
-            router.push(`/mon-compte/commandes/${order.id}`)
-        }}
-        orders={orders}
-        />
+        <>
+            <OrderTableLayout onRowClick={(order) => { router.push(`/mon-compte/commandes/${order.id}`) }} orders={orders} />
+        </>
+        
     )
 
 
