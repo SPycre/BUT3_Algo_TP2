@@ -3,21 +3,33 @@
 import { FC, memo, Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuBar, Button } from "tp-kit/components";
-import { ShoppingBag, X } from "@phosphor-icons/react";
+import { HouseSimple ,User ,ShoppingBag, X } from "@phosphor-icons/react";
 import Cart from "./cart";
 import { useStore } from "../hooks/use-cart";
 import CartCounter from "./cart-counter";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const Menu: FC<Props> = memo(function () {
+  const router = useRouter()
+
   return (
     <MenuBar
       trailing={
         <Popover as="div" className="flex justify-end">
           {({ open }) => (
             <>
-              <Popover.Button as={Button} variant={"ghost"} className={"!rounded-full !p-0 flex justify-center items-center aspect-square relative text-3xl"}>
+
+              <Button onClick={() => router.replace('/')} variant={"ghost"}  className={"!rounded-full !p-0 m-1 flex justify-center items-center aspect-square relative text-3xl"}>
+                <HouseSimple size={24} weight="regular"/>
+              </Button>
+
+              <Button onClick={() => router.push('/mon-compte')} variant={"ghost"}  className={"!rounded-full !p-0 m-1 flex justify-center items-center aspect-square relative text-3xl"}>
+                <User size={24} weight="regular"/>
+              </Button>
+
+              <Popover.Button as={Button} variant={"ghost"} className={"!rounded-full !p-0 flex m-1 justify-center items-center aspect-square relative text-3xl"}>
                 {open 
                   ? <X size={18} weight="regular" />
                   : <ShoppingBag size={24} weight="regular" />}
@@ -36,6 +48,7 @@ const Menu: FC<Props> = memo(function () {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
+                
                 <Popover.Panel className="absolute left-0 sm:left-auto right-0 top-full z-10 mt-6 sm:w-full sm:max-w-sm">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white p-8">
                     <Cart/>
