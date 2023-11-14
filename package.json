@@ -12,9 +12,10 @@
     "lint": "next lint"
   },
   "prisma": {
-	  "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-	},
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "@prisma/client": "^5.5.0",
     "@types/node": "20.4.7",
     "@types/react": "18.2.18",

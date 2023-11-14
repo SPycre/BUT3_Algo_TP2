@@ -36,7 +36,7 @@ model ProductCategory {
 
 
 model OrderLine {
-  id Int @unique
+  id Int @unique @default(autoincrement())
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId Int
   product Product @relation(fields: [productId],references: [id], onDelete: Cascade)
@@ -47,8 +47,8 @@ model OrderLine {
 }
 
 model Order {
-  id Int @unique
-  createdAt DateTime
+  id Int @unique @default(autoincrement())
+  createdAt DateTime @default(now())
   completedAt DateTime?
   status OrderStatusEnum @default(IN_PROGRESS)
   lines OrderLine[]

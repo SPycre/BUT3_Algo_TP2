@@ -5,6 +5,14 @@ export type ProductFiltersResult = {
   search?: string,
 };
 
+export type OrdersResult = {
+  id:number;
+  createdAt:Date;
+  completedAt:Date | null;
+  status: $Enums.OrderStatusEnum;
+  total: number;
+}
+
 export type NextPageProps<T = Record<string, string>> = {
   /**
    * The path parameters received 
@@ -27,3 +35,4 @@ export type CartData = {
   lines:ProductLineData[],
   count:number
 }
+
