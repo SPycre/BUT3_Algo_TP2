@@ -20,8 +20,6 @@ export default function CompteData({user} : props) {
         router.refresh()
     }
 
-    //rien
-
     return (
         <>
             <Flex direction="column" gap="md">

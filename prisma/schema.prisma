@@ -48,6 +48,7 @@ model OrderLine {
 
 model Order {
   id Int @unique @default(autoincrement())
+  userId String @db.Uuid()
   createdAt DateTime @default(now())
   completedAt DateTime?
   status OrderStatusEnum @default(IN_PROGRESS)
