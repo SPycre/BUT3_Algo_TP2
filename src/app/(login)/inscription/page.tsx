@@ -3,8 +3,9 @@ import { z } from 'zod';
 import { Metadata } from "next/types";
 import { useForm, zodResolver } from '@mantine/form'
 import { TextInput, PasswordInput, Flex } from '@mantine/core'
-import { Button, Card, Heading, SectionContainer } from "tp-kit/components";
+import { Button, Card, Heading, NoticeMessage, NoticeMessageData, SectionContainer } from "tp-kit/components";
 import Link from "next/link";
+import { useState } from 'react';
 
 export const metadata:Metadata = {
     title: `Inscription - Starbucks`,
@@ -19,29 +20,74 @@ export const metadata:Metadata = {
 
 export default function Inscription() {
 
+    const [notices, setNotices] = useState<NoticeMessageData[]>([])
     const form = useForm({
-        validate: zodResolver(schema),
+        validate: (values) => {
+          return zodResolver(schema)(values)
+        },
         initialValues: {
             email:'',
             name:'',
             password:''
         },
+        
       });
+
+      function addError(message : string) {
+        setNotices(n => [...n, {type:"error", message: message}])
+      }
+
+      function addSuccess(message : string) {
+        setNotices(n => [...n, {type:"success", message: message}])
+      }
+
+      function removeNotice(index : number) {
+        setNotices(n => {
+          delete(n[index]);
+          return Object.values(n);
+      });
+      }
+
+      function onSubmit(values) {
+        values.preventDefault()
+        setNotices([])
+        const result = form.validate(values)
+
+        if (result.hasErrors) {
+          if (result.errors.name) {
+            addError(result.errors.name)
+          }
+          if (result.errors.email) {
+            addError(result.errors.email)
+          }
+          if (result.errors.password) {
+            addError(result.errors.password)
+          }
+        } else {
+          addSuccess('Votre inscription a bien été prise en compte. Validez votre adresse mail pour vous connecter.')
+        }
+      }
 
     return (
             <Flex direction='column' gap="md">
                     <Heading as={"h1"}>
                         Inscription
                     </Heading>
-                    <label>Nom</label>
-                    <TextInput {...form.getInputProps('name')}/>
-                    <label>Adresse email</label>
-                    <TextInput {...form.getInputProps('email')}/>
-                    <label>Mot de passe<span className="text-red">*</span></label>
-                    <PasswordInput {...form.getInputProps('password')}/>
-                    <Button>
-                        S'inscrire
-                    </Button>
+                    <ul>
+                      {notices.map((notice, i) => <NoticeMessage
+                      key={i}
+                      {...notice}
+                      onDismiss={() => removeNotice(i)}/>)}
+                    </ul>
+                    <form onSubmit={values => onSubmit(values)}>
+                      <TextInput id='name' label="Nom" {...form.getInputProps('name')}/>
+                      <TextInput id='email' label="Adresse mail" {...form.getInputProps('email')}/>
+                      <PasswordInput id='password' label="Mot de passe" {...form.getInputProps('password')}/>
+                      <Button type='submit'>
+                          S'inscrire
+                      </Button>
+                    </form>
+                    
                     <Link href={'/login'} className="text-center text-green">Déjà un compte ? Se connecter</Link>
             </Flex>
     );
