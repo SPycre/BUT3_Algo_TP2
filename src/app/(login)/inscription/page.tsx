@@ -3,9 +3,9 @@ import { z } from 'zod';
 import { Metadata } from "next/types";
 import { useForm, zodResolver } from '@mantine/form'
 import { TextInput, PasswordInput, Flex } from '@mantine/core'
-import { Button, Card, Heading, NoticeMessage, NoticeMessageData, SectionContainer } from "tp-kit/components";
+import { Button, Card, Heading, NoticeMessage, NoticeMessageData, SectionContainer, useZodI18n } from "tp-kit/components";
 import Link from "next/link";
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export const metadata:Metadata = {
     title: `Inscription - Starbucks`,
@@ -13,14 +13,15 @@ export const metadata:Metadata = {
   }
 
   const schema = z.object({
-    name: z.string().nonempty("Name can't be empty"),
-    email: z.string().email("Invalid email"),
-    password: z.string().min(6,"Password must be at least 6 characters")
+    name: z.string().nonempty(),
+    email: z.string().email(),
+    password: z.string().min(6)
   })
 
 export default function Inscription() {
 
     const [notices, setNotices] = useState<NoticeMessageData[]>([])
+    useZodI18n(z);
     const form = useForm({
         validate: (values) => {
           return zodResolver(schema)(values)
@@ -48,10 +49,10 @@ export default function Inscription() {
       });
       }
 
-      function onSubmit(values) {
-        values.preventDefault()
+      function onSubmit(e : FormEvent<HTMLFormElement>) {
+        e.preventDefault()
         setNotices([])
-        const result = form.validate(values)
+        const result = form.validate()
 
         if (result.hasErrors) {
           if (result.errors.name) {
@@ -79,7 +80,7 @@ export default function Inscription() {
                       {...notice}
                       onDismiss={() => removeNotice(i)}/>)}
                     </ul>
-                    <form onSubmit={values => onSubmit(values)}>
+                    <form onSubmit={e => onSubmit(e)}>
                       <TextInput id='name' label="Nom" {...form.getInputProps('name')}/>
                       <TextInput id='email' label="Adresse mail" {...form.getInputProps('email')}/>
                       <PasswordInput id='password' label="Mot de passe" {...form.getInputProps('password')}/>

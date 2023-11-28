@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { Metadata } from "next/types";
 import { TextInput, PasswordInput, Flex } from '@mantine/core'
-import { Button, Card, Heading, SectionContainer } from "tp-kit/components";
+import { Button, Card, Heading, SectionContainer, useZodI18n } from "tp-kit/components";
 import { useForm } from '@mantine/form'
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ export const metadata:Metadata = {
 
   export default function Connexion() {
 
+    useZodI18n(z);
     const form = useForm({
         initialValues: {
             email:'',
