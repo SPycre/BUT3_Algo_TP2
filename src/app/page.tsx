@@ -11,7 +11,6 @@ export const metadata:Metadata = {
 }
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies })
   const categories = await prisma.productCategory.findMany({include: {
     products: true,
   }})

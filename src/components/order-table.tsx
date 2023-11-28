@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { getOrders } from "../actions/get-orders"
 import { OrdersResult } from "../types"
-import { OrderTableLayout } from "tp-kit/components"
+import { Heading, OrderTableLayout } from "tp-kit/components"
 import { useRouter } from "next/navigation"
 
 type Props = {
@@ -16,6 +16,7 @@ export default function OrderTable({orders} : Props) {
 
     return (
         <>
+            <Heading as={"h1"}>Mes Commandes</Heading>
             <OrderTableLayout onRowClick={(order) => { router.push(`/mon-compte/commandes/${order.id}`) }} orders={orders} />
         </>
         

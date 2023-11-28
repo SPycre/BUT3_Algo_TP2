@@ -27,27 +27,33 @@ export const metadata:Metadata = {
         },
       });
       
-      const handleSignIn = async() => {
-        await supabase.auth.signInWithPassword({
+      const handleSignIn = async(values) => {
+        const signin = await supabase.auth.signInWithPassword({
             email:form.values.email,
             password:form.values.password
         });
-        router.refresh()
+
+        if (signin.error) {
+            // Erreur
+        } else {
+            router.push('/')
+        }
       }
 
     return (
-                <Flex direction='column' gap="md">
-                    <Heading as={"h1"}>
-                        Connexion
-                    </Heading>
-                    <label>Adresse email</label>
-                    <TextInput {...form.getInputProps('email')}/>
-                    <label>Mot de passe<span className="text-red">*</span></label>
-                    <PasswordInput {...form.getInputProps('password')}/>
-                    <Button>
-                        Se connecter
-                    </Button>
-                    <Link href={'/inscription'} className="text-center text-green">Créer un compte</Link>
-                </Flex>
+        <form onSubmit={form.onSubmit(values => handleSignIn(values))}>
+            <Flex direction='column' gap="md">
+                <Heading as={"h1"}>
+                    Connexion
+                </Heading>
+                <TextInput label="Adresse email" id="email" {...form.getInputProps('email')}/>
+                <PasswordInput label="Mot de passe" id="password" {...form.getInputProps('password')}/>
+                <Button type='submit'>
+                    Se connecter
+                </Button>
+                <Link href={'/inscription'} className="text-center text-green">Créer un compte</Link>
+            </Flex>
+        </form>
+                
     );
 }

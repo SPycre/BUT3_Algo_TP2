@@ -3,10 +3,9 @@ import { z } from 'zod';
 import { Metadata } from "next/types";
 import { useForm, zodResolver } from '@mantine/form'
 import { TextInput, PasswordInput, Flex } from '@mantine/core'
-import { Button, Card, Heading, NoticeMessage, NoticeMessageData, SectionContainer, useZodI18n } from "tp-kit/components";
+import { Button, Heading, NoticeMessage, NoticeMessageData, SectionContainer, useZodI18n } from "tp-kit/components";
 import Link from "next/link";
-import { FormEvent, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -69,8 +68,6 @@ export default function Inscription() {
           if (result.errors.password) {
             addError(result.errors.password)
           }
-        } else {
-          addSuccess('Votre inscription a bien été prise en compte. Validez votre adresse mail pour vous connecter.')
         }
 
         const signup = await supabase.auth.signUp({
@@ -84,7 +81,9 @@ export default function Inscription() {
           }
         })
 
-        console.log(signup)
+        if (signup.error) {
+          addError(signup.error.message)
+        }
       }
 
     return (
