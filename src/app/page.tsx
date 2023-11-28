@@ -2,6 +2,8 @@ import { BreadCrumbs, SectionContainer } from "tp-kit/components";
 import { ProductList } from "../components/product-list";
 import { Metadata } from "next";
 import prisma from "../utils/prisma";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export const metadata:Metadata = {
   title: `Page d’accueil - Starbucks`,
@@ -9,6 +11,7 @@ export const metadata:Metadata = {
 }
 
 export default async function Home() {
+  const supabase = createServerComponentClient({ cookies })
   const categories = await prisma.productCategory.findMany({include: {
     products: true,
   }})

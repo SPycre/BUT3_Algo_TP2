@@ -6,6 +6,9 @@ import { TextInput, PasswordInput, Flex } from '@mantine/core'
 import { Button, Card, Heading, NoticeMessage, NoticeMessageData, SectionContainer, useZodI18n } from "tp-kit/components";
 import Link from "next/link";
 import { FormEvent, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const metadata:Metadata = {
     title: `Inscription - Starbucks`,
@@ -20,7 +23,10 @@ export const metadata:Metadata = {
 
 export default function Inscription() {
 
-    const [notices, setNotices] = useState<NoticeMessageData[]>([])
+  const supabase = createClientComponentClient()
+  const router = useRouter()
+  const [notices, setNotices] = useState<NoticeMessageData[]>([])
+  
     useZodI18n(z);
     const form = useForm({
         validate: (values) => {
@@ -49,8 +55,7 @@ export default function Inscription() {
       });
       }
 
-      function onSubmit(e : FormEvent<HTMLFormElement>) {
-        e.preventDefault()
+      const handleSignUp = async(values) => {
         setNotices([])
         const result = form.validate()
 
@@ -67,6 +72,19 @@ export default function Inscription() {
         } else {
           addSuccess('Votre inscription a bien été prise en compte. Validez votre adresse mail pour vous connecter.')
         }
+
+        const signup = await supabase.auth.signUp({
+          email: form.values.email,
+          password:form.values.password,
+          options: {
+            data: {
+              name: form.values.name
+            },
+            emailRedirectTo: `${location.origin}/api/auth/callback`
+          }
+        })
+
+        console.log(signup)
       }
 
     return (
@@ -80,7 +98,7 @@ export default function Inscription() {
                       {...notice}
                       onDismiss={() => removeNotice(i)}/>)}
                     </ul>
-                    <form onSubmit={e => onSubmit(e)}>
+                    <form onSubmit={form.onSubmit(values => handleSignUp(values))}>
                       <TextInput id='name' label="Nom" {...form.getInputProps('name')}/>
                       <TextInput id='email' label="Adresse mail" {...form.getInputProps('email')}/>
                       <PasswordInput id='password' label="Mot de passe" {...form.getInputProps('password')}/>

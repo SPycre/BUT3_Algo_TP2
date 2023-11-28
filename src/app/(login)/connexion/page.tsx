@@ -5,6 +5,9 @@ import { TextInput, PasswordInput, Flex } from '@mantine/core'
 import { Button, Card, Heading, SectionContainer, useZodI18n } from "tp-kit/components";
 import { useForm } from '@mantine/form'
 import Link from "next/link";
+import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const metadata:Metadata = {
     title: `Connexion - Starbucks`,
@@ -13,6 +16,9 @@ export const metadata:Metadata = {
 
   export default function Connexion() {
 
+    const router = useRouter()
+    const supabase = createClientComponentClient()
+
     useZodI18n(z);
     const form = useForm({
         initialValues: {
@@ -20,6 +26,14 @@ export const metadata:Metadata = {
             password:''
         },
       });
+      
+      const handleSignIn = async() => {
+        await supabase.auth.signInWithPassword({
+            email:form.values.email,
+            password:form.values.password
+        });
+        router.refresh()
+      }
 
     return (
                 <Flex direction='column' gap="md">
