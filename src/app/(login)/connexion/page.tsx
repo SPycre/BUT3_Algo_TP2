@@ -36,7 +36,7 @@ export const metadata:Metadata = {
         if (signin.error) {
             // Erreur
         } else {
-            router.push('/')
+            router.refresh()
         }
       }
 

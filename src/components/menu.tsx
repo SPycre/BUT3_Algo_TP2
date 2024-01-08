@@ -1,18 +1,24 @@
 "use client";
 
-import { FC, memo, Fragment } from "react";
+import { FC, memo, Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuBar, Button } from "tp-kit/components";
 import { HouseSimple ,User ,ShoppingBag, X } from "@phosphor-icons/react";
 import Cart from "./cart";
-import { useStore } from "../hooks/use-cart";
 import CartCounter from "./cart-counter";
 import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-type Props = {};
+const Menu: FC = memo(function () {
 
-const Menu: FC<Props> = memo(function () {
+  const [isConnected, setConnected] = useState(false)
+
+  const supabase = createClientComponentClient();
   const router = useRouter()
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    setConnected(session != null)
+  })
 
   return (
     <MenuBar
@@ -25,10 +31,11 @@ const Menu: FC<Props> = memo(function () {
                 <HouseSimple size={24} weight="regular"/>
               </Button>
 
-              <Button onClick={() => router.push('/mon-compte')} variant={"ghost"}  className={"!rounded-full !p-0 m-1 flex justify-center items-center aspect-square relative text-3xl"}>
+              <Button onClick={() => router.push(isConnected ? '/mon-compte' : '/connexion')} variant={"ghost"}  className={"!rounded-full !p-0 m-1 flex justify-center items-center aspect-square relative text-3xl"}>
                 <User size={24} weight="regular"/>
               </Button>
 
+              {isConnected &&
               <Popover.Button as={Button} variant={"ghost"} className={"!rounded-full !p-0 flex m-1 justify-center items-center aspect-square relative text-3xl"}>
                 {open 
                   ? <X size={18} weight="regular" />
@@ -37,7 +44,8 @@ const Menu: FC<Props> = memo(function () {
                 <div className="aspect-square bg-brand text-white text-center text-xs absolute right-0 top-0 rounded-full flex items-center justify-center h-[20px] w-[20px]">
                   <div><CartCounter/></div>
                 </div>
-              </Popover.Button>
+              </Popover.Button>}
+              
 
               <Transition
                 as={Fragment}
