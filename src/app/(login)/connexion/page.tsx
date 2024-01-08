@@ -27,7 +27,7 @@ export const metadata:Metadata = {
         },
       });
       
-      const handleSignIn = async(values) => {
+      const handleSignIn = async(values : {email : string, password : string}) => {
         const signin = await supabase.auth.signInWithPassword({
             email:form.values.email,
             password:form.values.password

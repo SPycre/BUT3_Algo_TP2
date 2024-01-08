@@ -16,8 +16,13 @@ type Props = {
 export default async function OrderLayout({children} : Props) {
 
     const supabase = createServerComponentClient({ cookies })
-    const orders = await prisma.order.findMany();
     const user = await getUser(supabase)
+    const orders = await prisma.order.findMany({
+        where: {
+            userId:user?.id
+        }
+    });
+    
 
     if (!user) {
         redirect('/connexion')
