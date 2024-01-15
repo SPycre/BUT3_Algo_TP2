@@ -5,6 +5,7 @@ import { NextPageProps } from "../../../../types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { getUser } from "../../../../utils/supabase";
+import RealTimeOrderDetails from "../../../../components/realtimeorderdetails";
 
 type Props = {
     orderId: number;
@@ -30,6 +31,6 @@ export default async function CommandePage({params}: NextPageProps<Props>) {
     if (!order) notFound();
 
     return (
-        <OrderDetailsLayout order={order}/>
+        <RealTimeOrderDetails order={order}/>
     )
 }

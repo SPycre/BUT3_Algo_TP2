@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, Fragment, useState } from "react";
+import { FC, memo, Fragment, useState, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuBar, Button } from "tp-kit/components";
 import { HouseSimple ,User ,ShoppingBag, X } from "@phosphor-icons/react";
@@ -16,9 +16,12 @@ const Menu: FC = memo(function () {
   const supabase = createClientComponentClient();
   const router = useRouter()
 
-  supabase.auth.onAuthStateChange((event, session) => {
-    setConnected(session != null)
-  })
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      setConnected(session != null)
+    })
+  },[])
+  
 
   return (
     <MenuBar

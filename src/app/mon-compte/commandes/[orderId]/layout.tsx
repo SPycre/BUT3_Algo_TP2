@@ -2,7 +2,7 @@
 import { Fragment, ReactNode } from 'react'
 import { Dialog, Transition } from "@headlessui/react"
 import { useRouter } from "next/navigation"
-import CommandePage from "./page"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 type Props = {
     children : ReactNode
@@ -10,9 +10,11 @@ type Props = {
 
 export default async function CommandeLayout({children} : Props) {
     const router = useRouter()
+    const supabase = createClientComponentClient()
 
     function closeModal() {
         router.replace('/mon-compte')
+        router.refresh()
     }
 
   return (
