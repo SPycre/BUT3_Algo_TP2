@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 
 
@@ -14,6 +15,8 @@ export async function POST(req : Request) {
             status: 403
         })
     }
+    console.log("rebuilding products...")
+    revalidatePath('/[categorySlug]/[productSlug]')
     return NextResponse.json({
         "revalidated":true,
         "date":new Date().toISOString()
