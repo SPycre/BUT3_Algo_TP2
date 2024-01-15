@@ -1,24 +1,22 @@
 import {
   BreadCrumbs,
-  Button,
   FormattedPrice,
   ProductCardLayout,
   ProductGridLayout,
   ProductRating,
   ProductImage,
-  SectionContainer,
+  SectionContainer
 } from "tp-kit/components";
 import { NextPageProps } from "../../../types";
-import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 import { Metadata } from "next";
 import {
   ProductAttribute,
-  ProductAttributesTable,
+  ProductAttributesTable
 } from "../../../components/product-attributes-table";
 import AddToCartButton from "../../../components/add-cart-button";
 import { getProduct } from "../../../utils/database";
 import { notFound } from 'next/navigation'
-import { Console } from "console";
+import prisma from "../../../utils/prisma";
 
 type Props = {
   categorySlug: string;
@@ -48,6 +46,30 @@ const productAttributes: ProductAttribute[] = [
   { label: "Onctuosité", rating: 4 },
   { label: "Instagramabilité", rating: 5 },
 ];
+
+export const dynamicParams = false
+
+export async function generateStaticParams({
+  params: { categorySlug, productSlug },
+}: {
+  params: { categorySlug: string, productSlug: string }
+}) {
+  const res = await prisma.product.findMany({
+    select:{
+      slug : true,
+      category : {
+        select :{
+          slug : true
+        }
+      }
+    },
+  })
+
+  return res.map((product) => ({
+    categorySlug: product.category.slug,
+    productSlug: product.slug
+  }))
+}
 
 export default async function ProductPage({ params }: NextPageProps<Props>) {
   const product = await getProduct(params.productSlug)

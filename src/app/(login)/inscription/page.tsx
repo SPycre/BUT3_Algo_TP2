@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { Metadata } from "next/types";
 import { useForm, zodResolver } from '@mantine/form'
 import { TextInput, PasswordInput, Flex } from '@mantine/core'
-import { Button, Heading, NoticeMessage, NoticeMessageData, SectionContainer, useZodI18n } from "tp-kit/components";
+import { Button, Heading, NoticeMessage, NoticeMessageData, useZodI18n } from "tp-kit/components";
 import Link from "next/link";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -54,19 +54,19 @@ export default function Inscription() {
       });
       }
 
-      const handleSignUp = async(values) => {
+      const handleSignUp = async(values :{email: string;name: string;password: string;}) => {
         setNotices([])
         const result = form.validate()
 
         if (result.hasErrors) {
           if (result.errors.name) {
-            addError(result.errors.name)
+            addError(result.errors.name.toString())
           }
           if (result.errors.email) {
-            addError(result.errors.email)
+            addError(result.errors.email.toString())
           }
           if (result.errors.password) {
-            addError(result.errors.password)
+            addError(result.errors.password.toString())
           }
         }
 
